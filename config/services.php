@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'qls' => [
+        'api' => [
+            'url' => env('QLS_API_URL'),
+            'user' => env('QLS_API_USER'),
+            'password' => env('QLS_API_PASSWORD'),
+        ],
+        'company' => [
+            'id' => env('QLS_COMPANY_ID'),
+        ],
+        'brand' => [
+            'id' => env('QLS_BRAND_ID'),
+        ],
+    ],
+
 ];
