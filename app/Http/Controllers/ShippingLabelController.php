@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreShippingLabelRequest;
 use App\Services\ShippingLabelService;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ShippingLabelController
 {
@@ -17,13 +18,14 @@ class ShippingLabelController
         return view('shipping-label', [
             'company_id' => config('services.qls.company.id'),
             'brand_id' => config('services.qls.brand.id'),
+            'product_combination' => config('services.qls.product_combination'),
         ]);
     }
 
-    public function store(StoreShippingLabelRequest $request)
+    public function store(StoreShippingLabelRequest $request): BinaryFileResponse
     {
-        $this->shippingLabelService->createShippingLabel($request->validated());
+        $shippingLabel = $this->shippingLabelService->createShippingLabel($request->validated());
 
-        $request->dd();
+        return response()->file($shippingLabel->pdf->path());
     }
 }

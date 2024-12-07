@@ -34,6 +34,27 @@
                             <input type="hidden" name="company_id" value="{{ $company_id }}">
                             <input type="hidden" name="brand_id" value="{{ $brand_id }}">
 
+                            <label for="product_combination_id">Product Combination ID</label><br />
+                            <input id="product_combination_id" type="text" name="product_combination_id" value="{{ $product_combination->value }}"><br />
+
+                            <fieldset>
+                                <legend>Receiver contact</legend>
+                                <label for="name">Naam</label><br />
+                                <input id="name" type="text" name="name"><br />
+                                <label for="companyname">Bedrijfsnaam</label><br />
+                                <input id="companyname" type="text" name="companyname"><br />
+                                <label for="street">Straatnaam</label><br />
+                                <input id="street" type="text" name="street"><br />
+                                <label for="housenumber">Huisnummer</label><br />
+                                <input id="housenumber" type="text" name="housenumber"><br />
+                                <label for="postalcode">Postcode</label><br />
+                                <input id="postalcode" type="text" name="postalcode"><br />
+                                <label for="locality">Regio</label><br />
+                                <input id="locality" type="text" name="locality"><br />
+                                <label for="country">Land</label><br />
+                                <input id="country" type="text" name="country"><br />
+                            </fieldset>
+
                             <input type="submit">
                         </form>
                     </main>

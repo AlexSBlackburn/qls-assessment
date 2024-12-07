@@ -11,6 +11,14 @@ class StoreShippingLabelRequest extends FormRequest
         return [
             'company_id' => ['required', 'uuid'],
             'brand_id' => ['required', 'uuid'],
+            'product_combination_id' => ['required', 'integer'],
+            'name' => ['required'],
+            'companyname' => ['required'],
+            'street' => ['required'],
+            'housenumber' => ['required'],
+            'postalcode' => ['required'],
+            'locality' => ['required'],
+            'country' => ['required'],
         ];
     }
 }

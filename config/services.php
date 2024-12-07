@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ProductCombination;
+
 return [
 
     /*
@@ -47,6 +49,7 @@ return [
         'brand' => [
             'id' => env('QLS_BRAND_ID'),
         ],
+        'product_combination' => ProductCombination::DHL,
     ],
 
 ];

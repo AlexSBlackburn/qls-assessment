@@ -14,7 +14,9 @@ class ShippingLabelServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ShippingLabelService::class, function (): ShippingLabelService {
-            $client = Http::baseUrl(config('services.qls.api.url').'/v2')->throw();
+            $client = Http::baseUrl(config('services.qls.api.url'))
+                ->withBasicAuth(config('services.qls.api.user'), config('services.qls.api.password'))
+                ->throw();
 
             return new ShippingLabelService($client);
         });
