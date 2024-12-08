@@ -15,8 +15,9 @@
 - [x] API request to get shipping label PDF
 - Combine shipping label with order information into a single PDF
 - Show link to download created PDF
+- Error handling (API and code)
 
 ## ToDo:
-- Install Pest for testing
+- [x] Install Pest for testing
 - Research getting content from PDF
 - Research how to combine PDFs

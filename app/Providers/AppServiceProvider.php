@@ -6,6 +6,10 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $singletons = [
+        'App\Services\PackingSlipService' => 'App\Services\PackingSlipService',
+    ];
+
     /**
      * Register any application services.
      */
