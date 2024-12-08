@@ -1,21 +1,58 @@
 <?php
 
+use App\DTOs\ProductCombination;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 it('shows a packing slip form', function () {
-    $this
-        ->get('/')
+    Http::fake([
+        '*' => Http::response(file_get_contents(base_path('tests/stubs/products.json'))),
+    ]);
+
+    $response = $this
+        ->get('/');
+
+    Http::assertSent(fn (Request $request) => str($request->url())->contains('/companies/'.config('services.qls.company.id').'/products'));
+
+    $response
         ->assertOk()
         ->assertViewIs('create-packing-slip')
         ->assertViewHas([
             'company_id' => config('services.qls.company.id'),
             'brand_id' => config('services.qls.brand.id'),
-            'product_combination' => config('services.qls.product_combination'),
+            'product_combinations' => collect([
+                [
+                    'id' => 3,
+                    'name' => 'DHL Pakje',
+                ],
+                [
+                    'id' => 8,
+                    'name' => 'DHL Pakje (handtekening)',
+                ],
+                [
+                    'id' => 9,
+                    'name' => 'DHL Pakje (niet bij buren)',
+                ],
+                [
+                    'id' => 11,
+                    'name' => 'DHL Pakje (handtekening + niet bij buren)',
+                ],
+                [
+                    'id' => 43,
+                    'name' => 'DHL Pakje (avondlevering)',
+                ],
+                [
+                    'id' => 66,
+                    'name' => 'DHL Pakje (leeftijdscheck)',
+                ],
+            ])->map(fn (array $combination) => new ProductCombination(
+                id: $combination['id'],
+                name: $combination['name'],
+            )),
         ]);
-});
+})->only();
 
 it('creates a packing slip', function () {
     $companyId = fake()->uuid;

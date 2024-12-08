@@ -20,22 +20,30 @@
         </header>
 
         <main class="flex justify-center mt-6">
-            @error('company_id', 'brand_id', 'product_combination_id')
-                <div>{{ $message }}</div>
-            @enderror
             <form method="POST" action="/" class="w-80">
                 @csrf
 
-                <input type="hidden" name="company_id" value="{{ $company_id }}">
-                <input type="hidden" name="brand_id" value="{{ $brand_id }}">
+                <input type="hidden" name="company_id" value="{{ $company_id }}"><br />
+                @error('company_id')
+                    <div>{{ $message }}</div>
+                @enderror
+                <input type="hidden" name="brand_id" value="{{ $brand_id }}"><br />
+                @error('brand_id')
+                    <div>{{ $message }}</div>
+                @enderror
 
-                <label for="product_combination_id">Product Combination ID</label><br />
+                <label for="product_combination_id">Verzendproduct</label><br />
                 <select class="p-2 border border-black rounded mb-2 w-full" name="product_combination_id" id="product_combination_id">
-                    <option value="3" @if($product_combination->value === 3) selected @endif>DHL Pakket</option>
+                    @foreach($product_combinations as $product_combination)
+                        <option value="{{ $product_combination->id }}">{{ $product_combination->name }}</option>
+                    @endforeach
                 </select>
+                @error('product_combination_id')
+                    <div>{{ $message }}</div>
+                @enderror
 
                 <fieldset class="mt-4">
-                    <legend>Receiver contact</legend>
+                    <legend>Adresgegevens ontvanger</legend>
                     <label for="name">Naam</label><br />
                     <input class="p-2 border border-black rounded mb-2 w-full" id="name" type="text" name="name" value="{{ old('name') }}"><br />
                     @error('name')
@@ -61,7 +69,7 @@
                     @error('postalcode')
                         <div class="text-red-600">{{ $message }}</div>
                     @enderror
-                    <label for="locality">Regio</label><br />
+                    <label for="locality">Stad</label><br />
                     <input class="p-2 border border-black rounded mb-2 w-full" id="locality" type="text" name="locality" value="{{ old('locality') }}"><br />
                     @error('locality')
                         <div class="text-red-600">{{ $message }}</div>

@@ -7,13 +7,13 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
-class ShipmentService
+final readonly class ShipmentService
 {
     public function __construct(private PendingRequest $client) {}
 
     public function createShipment(array $data): Shipment
     {
-        $shipment = $this->client->post('/'.$data['company_id'].'/shipments', [
+        $shipment = $this->client->post('/v2/companies/'.$data['company_id'].'/shipments', [
             'product_combination_id' => $data['product_combination_id'],
             'brand_id' => $data['brand_id'],
             'receiver_contact' => [
@@ -47,7 +47,8 @@ class ShipmentService
     public function createShippingLabel(Shipment $shipment): File
     {
         $pdf = $this->client->get(
-            str($shipment->labelPdfUrl)->remove(config('services.qls.api.url')) // Remove basename from PDF request URL, this is already set in the service provider
+            // Remove API base URL from PDF request URL, this is already set in the service provider
+            str($shipment->labelPdfUrl)->remove(config('services.qls.api.url'))
         )->json('data');
 
         Storage::put($shipment->id.'.pdf', base64_decode($pdf));

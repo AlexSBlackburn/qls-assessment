@@ -7,7 +7,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\File as Filesystem;
 use Spatie\PdfToImage\Pdf;
 
-class PackingSlipService
+final class PackingSlipService
 {
     private array $order = [
         'number' => '#958201',
