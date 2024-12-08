@@ -3,18 +3,18 @@
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
-it('shows a shipping label form', function () {
+it('shows a packing slip form', function () {
     $this
         ->get('/')
         ->assertOk()
-        ->assertViewIs('shipping-label')
+        ->assertViewIs('create-packing-slip')
         ->assertViewHas([
             'company_id' => config('services.qls.company.id'),
             'brand_id' => config('services.qls.brand.id'),
         ]);
 });
 
-it('creates a shipping label', function () {
+it('creates a packing slip', function () {
     $companyId = fake()->uuid;
     $brandId = fake()->uuid;
 

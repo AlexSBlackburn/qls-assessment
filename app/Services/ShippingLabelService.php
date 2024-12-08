@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\DTOs\ShippingLabel;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Cache;
@@ -12,7 +11,7 @@ class ShippingLabelService
 {
     public function __construct(private PendingRequest $client) {}
 
-    public function createShippingLabel(array $data): ShippingLabel
+    public function createShippingLabel(array $data): File
     {
         // Create new shipment
         // Don't spam the API while testing
@@ -49,6 +48,6 @@ class ShippingLabelService
         // Store PDF locally
         Storage::put($shipment['id'].'.pdf', base64_decode($pdf));
 
-        return new ShippingLabel(pdf: new File(Storage::path($shipment['id'].'.pdf')));
+        return new File(Storage::path($shipment['id'].'.pdf'));
     }
 }
