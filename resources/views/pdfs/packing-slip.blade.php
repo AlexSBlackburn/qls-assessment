@@ -1,33 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        body > div {
+            display: block;
+            float: left;
+            width: 50%;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        table {
+            margin-bottom: 16px;
+        }
+        th, td {
+            padding: 4px;
+            text-align: left;
+        }
+    </style>
 </head>
-<body class="flex">
+<body>
     <div>
-        <img src="{{ $shipping_label }}" alt="shipping label" />
+        <img src="{{ $shipping_label }}" alt="shipping label" style="width: 450px" />
     </div>
     <div>
         <h1>Bestelinformatie</h1>
         <p>Ordernummer: {{ $order['number'] }}</p>
-        <h3>Factuuradres</h3>
-        @foreach($order['billing_address'] as $key => $value)
-            <p>{{ $key }}: {{ $value }}</p>
-        @endforeach
-        <h3>Afleveradres</h3>
-        @foreach($order['delivery_address'] as $key => $value)
-            <p>{{ $key }}: {{ $value }}</p>
-        @endforeach
-        <h3>Orderinformatie</h3>
-        @foreach($order['order_lines'] as $line)
-            <p>Name: {{ $line['name'] }}</p>
-            <p>Amount: {{ $line['amount_ordered'] }}x</p>
-            <p>SKU: {{ $line['sku'] }}x</p>
-            <p>EAN: {{ $line['ean'] }}x</p>
-        @endforeach
+        <h3>Klantgegevens</h3>
+        <table>
+            <tr>
+                <th></th>
+                <th>Factuuradres</th>
+                <th>Afleveradres</th>
+            </tr>
+            @foreach($order['billing_address'] as $key => $value)
+                <tr>
+                    <td>{{ $key }}</td>
+                    <td>{{ $value }}</td>
+                    <td>{{ $order['delivery_address'][$key] ?? '' }}</td>
+                </tr>
+            @endforeach
+        </table>
+        <h3>Bestelling</h3>
+        <table>
+            <tr>
+                <th>Naam</th>
+                <th>Aantal</th>
+                <th>SKU</th>
+                <th>EAN</th>
+            </tr>
+            @foreach($order['order_lines'] as $line)
+                <tr>
+                    <td>{{ $line['name'] }}</td>
+                    <td>{{ $line['amount_ordered'] }}</td>
+                    <td>{{ $line['sku'] }}</td>
+                    <td>{{ $line['ean'] }}</td>
+                </tr>
+            @endforeach
+        </table>
     </div>
 </body>
 </html>
