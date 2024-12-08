@@ -75,4 +75,4 @@ it('creates a packing slip', function () {
 
     // Cleanup
     File::delete(Storage::path('777bb11d-64e3-46b2-b726-a76fb66060d9.pdf'));
-})->only();
+});

@@ -14,7 +14,7 @@ class ShipmentServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ShipmentService::class, function (): ShipmentService {
-            $client = Http::baseUrl(config('services.qls.api.url'))
+            $client = Http::baseUrl(config('services.qls.api.url').'/v2/companies')
                 ->withBasicAuth(config('services.qls.api.user'), config('services.qls.api.password'))
                 ->throw();
 
