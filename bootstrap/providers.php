@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\ShippingLabelServiceProvider::class,
+    App\Providers\ShipmentServiceProvider::class,
 ];

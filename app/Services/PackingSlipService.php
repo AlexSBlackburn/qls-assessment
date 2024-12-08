@@ -49,17 +49,17 @@ class PackingSlipService
         ],
     ];
 
+    /**
+     * Convert shipping label PDF to image and combine with order information to create packing slip PDF.
+     */
     public function createPackingSlip(File $shippingLabel): \Barryvdh\DomPDF\PDF
     {
-        // Convert shipping label PDF to image
-        $shippingLabelPdf = new Pdf($shippingLabel->path());
-        $shippingLabelImagePath = $shippingLabelPdf->save(str($shippingLabel->path())->replace('.pdf', '.jpg'));
+        $shippingLabelImagePath = new Pdf($shippingLabel->path())->save(str($shippingLabel->path())->replace('.pdf', '.jpg'));
 
-        // Create packing slip PDF by combining shipping label image and order data
         $packingSlip = DomPdf::loadView('pdfs/packing-slip', [
-                'shipping_label' => $shippingLabelImagePath[0],
-                'order' => $this->order
-            ])
+            'shipping_label' => $shippingLabelImagePath[0],
+            'order' => $this->order,
+        ])
             ->setPaper('a4', 'landscape')
             ->save($shippingLabel->path());
 

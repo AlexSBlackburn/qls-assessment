@@ -13,8 +13,8 @@
 ## Tasks:
 - [x] Frontend form to request shipping label info
 - [x] API request to get shipping label PDF
-- Combine shipping label with order information into a single PDF
-- Show link to download created PDF
+- [x] Combine shipping label with order information into a single PDF
+- [x] Show created PDF
 - Error handling (API and code)
 
 ## ToDo:

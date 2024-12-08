@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePackingSlipRequest;
 use App\Services\PackingSlipService;
-use App\Services\ShippingLabelService;
+use App\Services\ShipmentService;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 final readonly class PackingSlipController
 {
     public function __construct(
-        private ShippingLabelService $shippingLabelService,
+        private ShipmentService $shipmentService,
         private PackingSlipService $packingSlipService,
     ) {}
 
@@ -26,7 +26,8 @@ final readonly class PackingSlipController
 
     public function store(StorePackingSlipRequest $request): Response
     {
-        $shippingLabel = $this->shippingLabelService->createShippingLabel($request->validated());
+        $shipment = $this->shipmentService->createShipment($request->validated());
+        $shippingLabel = $this->shipmentService->createShippingLabel($shipment);
 
         return $this->packingSlipService->createPackingSlip($shippingLabel)->stream();
     }

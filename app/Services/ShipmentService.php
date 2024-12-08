@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
+use App\DTOs\Shipment;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-class ShippingLabelService
+class ShipmentService
 {
     public function __construct(private PendingRequest $client) {}
 
-    public function createShippingLabel(array $data): File
+    public function createShipment(array $data): Shipment
     {
-        // Create new shipment
         // Don't spam the API while testing
         $shipment = Cache::remember(
             key: __METHOD__.$data['company_id'],
@@ -38,16 +38,29 @@ class ShippingLabelService
             message: 'Shipping label not found in API response.'
         );
 
-        // Fetch shipping label PDF
+        return new Shipment(
+            id: $shipment['id'],
+            labelPdfUrl: $shipment['label_pdf_url']
+        );
+    }
+
+    /**
+     * Create a shipping label for a shipment.
+     *
+     * Fetches the shipping label PDF from the API and stores it locally.
+     */
+    public function createShippingLabel(Shipment $shipment): File
+    {
         $pdf = Cache::remember(
-            key: __METHOD__.$shipment['label_pdf_url'],
+            key: __METHOD__.$shipment->id,
             ttl: now()->addDay(),
-            callback: fn () => $this->client->get(str($shipment['label_pdf_url'])->remove(config('services.qls.api.url')))->json('data')
+            callback: fn () => $this->client->get(
+                str($shipment->labelPdfUrl)->remove(config('services.qls.api.url')) // Remove basename from PDF request URL, this is already set in the service provider
+            )->json('data')
         );
 
-        // Store PDF locally
-        Storage::put($shipment['id'].'.pdf', base64_decode($pdf));
+        Storage::put($shipment->id.'.pdf', base64_decode($pdf));
 
-        return new File(Storage::path($shipment['id'].'.pdf'));
+        return new File(Storage::path($shipment->id.'.pdf'));
     }
 }
