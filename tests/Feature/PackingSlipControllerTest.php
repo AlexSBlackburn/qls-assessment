@@ -19,8 +19,6 @@ it('shows a packing slip form', function () {
 });
 
 it('creates a packing slip', function () {
-    Cache::flush();
-
     $companyId = fake()->uuid;
     $brandId = fake()->uuid;
     $companyName = fake()->company;
@@ -75,4 +73,54 @@ it('creates a packing slip', function () {
 
     // Cleanup
     File::delete(Storage::path('777bb11d-64e3-46b2-b726-a76fb66060d9.pdf'));
+});
+
+it('handles a missing shipping label url', function () {
+    $companyId = fake()->uuid;
+    $brandId = fake()->uuid;
+    $companyName = fake()->company;
+    $name = fake()->name;
+    $street = fake()->streetName;
+    $houseNumber = fake()->randomDigitNotZero();
+    $postcode = fake()->postcode;
+    $locality = fake()->city;
+    $country = 'NL';
+
+    Http::fake([
+        '*/v2/companies/*/shipments' => Http::response(file_get_contents(base_path('tests/stubs/shipment-missing-pdf.json'))),
+    ]);
+
+    $response = $this->post('/', [
+        'company_id' => $companyId,
+        'brand_id' => $brandId,
+        'product_combination_id' => 3,
+        'name' => $name,
+        'companyname' => $companyName,
+        'street' => $street,
+        'housenumber' => $houseNumber,
+        'postalcode' => $postcode,
+        'locality' => $locality,
+        'country' => $country,
+    ]);
+
+    Http::assertSent(fn (Request $request) => str($request->url())->endsWith('/v2/companies/'.$companyId.'/shipments') &&
+        $request->method() === 'POST' &&
+        $request['brand_id'] === $brandId &&
+        $request['product_combination_id'] === 3 &&
+        $request['receiver_contact'] === [
+            'name' => $name,
+            'companyname' => $companyName,
+            'street' => $street,
+            'housenumber' => $houseNumber,
+            'postalcode' => $postcode,
+            'locality' => $locality,
+            'country' => $country,
+        ]
+    );
+    Http::assertNotSent(fn (Request $request) => str($request->url())->contains('/v2/companies/9e606e6b-44a4-4a4e-a309-cc70ddd3a103/shipments/777bb11d-64e3-46b2-b726-a76fb66060d9/labels/pdf'));
+
+    $response
+        ->assertNotFound()
+        ->assertSee('Shipping label not found in API response.');
+
 });

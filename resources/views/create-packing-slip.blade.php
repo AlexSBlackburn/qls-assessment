@@ -20,7 +20,7 @@
         </header>
 
         <main class="flex justify-center mt-6">
-            @error('company_id', 'brand_id')
+            @error('company_id', 'brand_id', 'product_combination_id')
                 <div>{{ $message }}</div>
             @enderror
             <form method="POST" action="/" class="w-80">
@@ -37,19 +37,40 @@
                 <fieldset class="mt-4">
                     <legend>Receiver contact</legend>
                     <label for="name">Naam</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="name" type="text" name="name"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="name" type="text" name="name" value="{{ old('name') }}"><br />
+                    @error('name')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                     <label for="companyname">Bedrijfsnaam</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="companyname" type="text" name="companyname"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="companyname" type="text" name="companyname" value="{{ old('companyname') }}"><br />
+                    @error('company')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                     <label for="street">Straatnaam</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="street" type="text" name="street"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="street" type="text" name="street" value="{{ old('street') }}"><br />
+                    @error('street')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                     <label for="housenumber">Huisnummer</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="housenumber" type="text" name="housenumber"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="housenumber" type="text" name="housenumber" value="{{ old('housenumber') }}"><br />
+                    @error('housenumber')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                     <label for="postalcode">Postcode</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="postalcode" type="text" name="postalcode"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="postalcode" type="text" name="postalcode" value="{{ old('postalcode') }}"><br />
+                    @error('postalcode')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                     <label for="locality">Regio</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="locality" type="text" name="locality"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="locality" type="text" name="locality" value="{{ old('locality') }}"><br />
+                    @error('locality')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                     <label for="country">Land</label><br />
-                    <input class="p-2 border border-black rounded mb-2 w-full" id="country" type="text" name="country"><br />
+                    <input class="p-2 border border-black rounded mb-2 w-full" id="country" type="text" name="country" value="{{ old('country') }}"><br />
+                    @error('country')
+                        <div class="text-red-600">{{ $message }}</div>
+                    @enderror
                 </fieldset>
 
                 <input class="p-2 border border-black rounded mb-2 w-full cursor-pointer" type="submit">
