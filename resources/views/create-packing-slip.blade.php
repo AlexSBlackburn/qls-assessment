@@ -30,7 +30,9 @@
                 <input type="hidden" name="brand_id" value="{{ $brand_id }}">
 
                 <label for="product_combination_id">Product Combination ID</label><br />
-                <input class="p-2 border border-black rounded mb-2 w-full" id="product_combination_id" type="text" name="product_combination_id" value="{{ $product_combination->value }}"><br />
+                <select class="p-2 border border-black rounded mb-2 w-full" name="product_combination_id" id="product_combination_id">
+                    <option value="3" @if($product_combination->value === 3) selected @endif>DHL Pakket</option>
+                </select>
 
                 <fieldset class="mt-4">
                     <legend>Receiver contact</legend>
